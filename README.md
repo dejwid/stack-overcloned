@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Stack overcloned (pet project)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![screenshot](https://raw.githubusercontent.com/dejwid/stack-overcloned/master/public/screenshot.jpg)
 
 ## Available Scripts
 
