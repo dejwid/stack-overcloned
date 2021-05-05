@@ -24,7 +24,6 @@ function QuestionsPage() {
       <QuestionRow />
       <QuestionRow />
       <QuestionRow />
-
     </main>
   );
 }
