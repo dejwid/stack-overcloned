@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import {Component, useContext} from 'react';
 import Header1 from "./Header1";
 import styled from "styled-components";
 import Input from "./Input";
@@ -12,46 +12,48 @@ const Container = styled.div`
   padding: 30px 20px;
 `;
 
-class LoginPage extends Component {
+class RegisterPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
       password: '',
-      redirectToHomePage: false,
+      redirectToTheHomePage: false,
       error: false,
     }
   }
 
-  login(ev) {
+  register(ev) {
     ev.preventDefault();
-    axios.post('http://localhost:3030/login', {
+    axios.post('http://localhost:3030/register', {
       email: this.state.email,
       password: this.state.password,
     }, {withCredentials: true})
       .then(() => {
-        this.context.checkAuth().then(() => {
-          this.setState({error:false,redirectToHomePage: true});
-        });
+        this.context.checkAuth()
+          .then(() => this.setState({error:false,redirectToTheHomePage:true}));
       })
-      .catch(() => this.setState({error:true}));
+      .catch(error => {
+        this.setState({error:error.response.data});
+      });
   }
   render() {
     return (<>
-      {this.state.redirectToHomePage && (
+      {this.state.redirectToTheHomePage && (
         <Redirect to={'/'} />
       )}
       <Container>
-        <Header1 style={{marginBottom:'20px'}}>Login</Header1>
+        <Header1 style={{marginBottom:'20px'}}>Register</Header1>
         {this.state.error && (
-          <ErrorBox>Login failed</ErrorBox>
+          <ErrorBox>{this.state.error}</ErrorBox>
         )}
-        <form onSubmit={ev => this.login(ev)}>
+        <form onSubmit={ev => this.register(ev)}>
           <Input placeholder={'email'} type="email" value={this.state.email}
                  onChange={ev => this.setState({email:ev.target.value})} />
           <Input placeholder={'password'} type="password" value={this.state.password}
+                 autocomplete={'new-password'}
                  onChange={ev => this.setState({password:ev.target.value})} />
-          <BlueButton type={'submit'}>Login</BlueButton>
+          <BlueButton type={'submit'}>Register</BlueButton>
         </form>
       </Container>
     </>);
@@ -59,6 +61,6 @@ class LoginPage extends Component {
 
 }
 
-LoginPage.contextType = UserContext;
+RegisterPage.contextType = UserContext;
 
-export default LoginPage;
+export default RegisterPage;

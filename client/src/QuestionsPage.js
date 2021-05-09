@@ -1,7 +1,9 @@
 import styled from 'styled-components';
+import {useState,useEffect} from 'react';
 import QuestionRow from "./QuestionRow";
 import Header1 from "./Header1";
 import BlueButtonLink from "./BlueButtonLink";
+import axios from "axios";
 
 const HeaderRow = styled.div`
   display: grid;
@@ -10,20 +12,21 @@ const HeaderRow = styled.div`
 `;
 
 function QuestionsPage() {
+  const [questions,setQuestions] = useState([]);
+  function fetchQuestions() {
+    axios.get('http://localhost:3030/questions', {withCredentials:true})
+      .then(response => setQuestions(response.data));
+  }
+  useEffect(() => fetchQuestions(), []);
   return (
     <main>
       <HeaderRow>
-        <Header1 style={{margin:0}}>Top Questions</Header1>
+        <Header1 style={{margin:0}}>Questions</Header1>
         <BlueButtonLink to={'/ask'}>Ask&nbsp;Question</BlueButtonLink>
       </HeaderRow>
-      <QuestionRow />
-      <QuestionRow />
-      <QuestionRow />
-      <QuestionRow />
-      <QuestionRow />
-      <QuestionRow />
-      <QuestionRow />
-      <QuestionRow />
+      {questions && questions.length > 0 && questions.map(question => (
+        <QuestionRow title={question.title} id={question.id} />
+      ))}
     </main>
   );
 }

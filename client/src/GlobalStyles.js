@@ -32,6 +32,46 @@ const GlobalStyles = createGlobalStyle`
     padding: 15px;
     border-radius: 4px;
   }
+  
+  // tags
+  .react-tags{
+    margin-bottom: 20px;
+    border: 1px solid #777;
+    border-radius: 3px;
+    padding: 15px;
+  }
+  .react-tags__selected{
+    display: inline-block;
+  }
+  .react-tags__selected-tag{
+    border:0;
+    display: inline-block;
+    margin-right: 5px;
+    background-color: #3e4a52;
+    color: #9cc3db;
+    padding: 7px;
+    border-radius: 4px;
+    font-size: .9rem;
+  }
+  .react-tags__search{
+    display: inline-block;
+  }
+  input.react-tags__search-input,
+  input.react-tags__search-input:focus
+  {
+    outline: none;
+    background: none;
+    border: none;
+    display: block;
+    width: 100%;
+    min-width: 300px;
+    box-sizing: border-box;
+    padding: 10px;
+    color: #fff;
+  }
+  .react-tags__suggestions{
+    position: absolute;
+  }
 `;
 
 export default GlobalStyles;

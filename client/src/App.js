@@ -12,18 +12,26 @@ import GlobalStyles from "./GlobalStyles";
 import UserContext from "./UserContext";
 import LoginPage from "./LoginPage";
 import axios from "axios";
+import RegisterPage from "./RegisterPage";
+import ProfilePage from "./ProfilePage";
+import QuestionPage from "./QuestionPage";
 
 function App() {
   const [user,setUser] = useState(null);
 
   function checkAuth() {
-    axios.get('http://localhost:3030/profile', {withCredentials:true})
-      .then(response => {
-        setUser({email:response.data});
-      })
-      .catch(() => {
-        setUser(null);
-      });
+    return new Promise(((resolve, reject) => {
+      axios.get('http://localhost:3030/profile', {withCredentials:true})
+        .then(response => {
+          setUser({email:response.data});
+          resolve(response.data);
+        })
+        .catch(() => {
+          setUser(null);
+          reject(null);
+        });
+    }));
+
   }
 
   useEffect(() => {
@@ -39,7 +47,10 @@ function App() {
           <Header />
           <Switch>
             <Route path="/ask" component={AskPage} />
+            <Route path="/profile" component={ProfilePage} />
             <Route path="/login" component={LoginPage} />
+            <Route path="/register" component={RegisterPage} />
+            <Route path="/questions/:id" component={QuestionPage} />
             <Route path="/" component={QuestionsPage} />
           </Switch>
         </UserContext.Provider>

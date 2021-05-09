@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import {Link} from "react-router-dom";
 
 const QuestionStat = styled.div`
   text-align: center;
@@ -16,7 +18,7 @@ const QuestionStat = styled.div`
 const QuestionTitleArea = styled.div`
   padding: 0 30px;
 `;
-const QuestionLink = styled.a`
+const QuestionLink = styled(Link)`
   text-decoration: none;
   color:#3ca4ff;
   font-size: 1.1rem;
@@ -50,14 +52,14 @@ const UserLink = styled.a`
   color: #3ca4ff;
 `;
 
-function QuestionRow() {
+function QuestionRow({title,id}) {
   return (
     <StyledQuestionRow>
       <QuestionStat>0<span>votes</span></QuestionStat>
       <QuestionStat>1<span>answers</span></QuestionStat>
       <QuestionStat>6<span>views</span></QuestionStat>
       <QuestionTitleArea>
-        <QuestionLink>Getting string in quotes in javascript</QuestionLink>
+        <QuestionLink to={'/questions/'+id}>{title}</QuestionLink>
         <WhoAndWhen>
           asked 2 mins ago <UserLink>Dawid</UserLink>
         </WhoAndWhen>
@@ -69,5 +71,10 @@ function QuestionRow() {
     </StyledQuestionRow>
   );
 }
+
+QuestionRow.propTypes = {
+  title: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+};
 
 export default QuestionRow;
