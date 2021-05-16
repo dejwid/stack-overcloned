@@ -32,6 +32,10 @@ const GlobalStyles = createGlobalStyle`
     padding: 15px;
     border-radius: 4px;
   }
+  hr{
+    margin: 20px 0;
+    border-color:rgba(255,255,255,.1);
+  }
   
   // tags
   .react-tags{

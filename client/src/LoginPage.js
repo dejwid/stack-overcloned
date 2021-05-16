@@ -7,6 +7,7 @@ import axios from 'axios';
 import UserContext from "./UserContext";
 import {Redirect} from 'react-router-dom';
 import ErrorBox from "./ErrorBox";
+import {Helmet} from "react-helmet";
 
 const Container = styled.div`
   padding: 30px 20px;
@@ -38,6 +39,9 @@ class LoginPage extends Component {
   }
   render() {
     return (<>
+      <Helmet>
+        <title>StackOvercloned - login</title>
+      </Helmet>
       {this.state.redirectToHomePage && (
         <Redirect to={'/'} />
       )}

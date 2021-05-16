@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import axios from "axios";
+import {useState} from 'react';
 
 const ArrowUp = styled.div`
   width: 0;
@@ -34,24 +36,41 @@ const Total = styled.div`
 `;
 
 function VotingButtons(props) {
+  const [currentTotal,setCurrentTotal] = useState(0);
+  const [currentUserVote,setCurrentUserVote] = useState(null);
+  function handleVoteClick(direction) {
+    if (direction === currentUserVote) {
+      setCurrentUserVote(null);
+      setCurrentTotal( direction===1 ? total-1 : total+1 );
+    } else {
+      setCurrentUserVote(direction);
+      setCurrentTotal(total + direction - currentUserVote);
+    }
+    const directionName = direction === 1 ? 'up' : 'down';
+    axios.post('http://localhost:3030/vote/'+directionName+'/'+props.postId, {}, {withCredentials:true})
+      .then(response => {
+        setCurrentTotal(response.data);
+      });
+  }
+  const total = currentTotal || props.initialTotal || 0;
+  const userVote = currentUserVote === null ? props.initialUserVote : currentUserVote;
   return (
     <div {...props}>
-      <ArrowButton onClick={() => props.onArrowUpClick()}>
-        <ArrowUp size={props.size} uservote={props.userVote} />
+      <ArrowButton onClick={() => handleVoteClick(1)}>
+        <ArrowUp size={props.size} uservote={userVote} />
       </ArrowButton>
-      <Total size={props.size}>{props.total}</Total>
-      <ArrowButton onClick={() => props.onArrowDownClick()}>
-        <ArrowBottom size={props.size} uservote={props.userVote} />
+      <Total size={props.size}>{total}</Total>
+      <ArrowButton onClick={() => handleVoteClick(-1)}>
+        <ArrowBottom size={props.size} uservote={userVote} />
       </ArrowButton>
     </div>
   );
 }
 
 VotingButtons.propTypes = {
-  total: PropTypes.number.isRequired,
-  userVote: PropTypes.number.isRequired,
-  onArrowUpClick: PropTypes.any,
-  onArrowDownClick: PropTypes.any,
+  initialTotal: PropTypes.number.isRequired,
+  initialUserVote: PropTypes.number,
+  postId: PropTypes.number.isRequired,
 };
 
 export default VotingButtons;

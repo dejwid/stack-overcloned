@@ -7,6 +7,7 @@ import axios from 'axios';
 import UserContext from "./UserContext";
 import {Redirect} from 'react-router-dom';
 import ErrorBox from "./ErrorBox";
+import {Helmet} from "react-helmet";
 
 const Container = styled.div`
   padding: 30px 20px;
@@ -18,6 +19,7 @@ class RegisterPage extends Component {
     this.state = {
       email: '',
       password: '',
+      name: '',
       redirectToTheHomePage: false,
       error: false,
     }
@@ -28,6 +30,7 @@ class RegisterPage extends Component {
     axios.post('http://localhost:3030/register', {
       email: this.state.email,
       password: this.state.password,
+      name: this.state.name,
     }, {withCredentials: true})
       .then(() => {
         this.context.checkAuth()
@@ -39,6 +42,9 @@ class RegisterPage extends Component {
   }
   render() {
     return (<>
+      <Helmet>
+        <title>StackOvercloned - register</title>
+      </Helmet>
       {this.state.redirectToTheHomePage && (
         <Redirect to={'/'} />
       )}
@@ -50,6 +56,8 @@ class RegisterPage extends Component {
         <form onSubmit={ev => this.register(ev)}>
           <Input placeholder={'email'} type="email" value={this.state.email}
                  onChange={ev => this.setState({email:ev.target.value})} />
+          <Input placeholder={'your name'} type="text" value={this.state.name}
+                 onChange={ev => this.setState({name:ev.target.value})} />
           <Input placeholder={'password'} type="password" value={this.state.password}
                  autocomplete={'new-password'}
                  onChange={ev => this.setState({password:ev.target.value})} />

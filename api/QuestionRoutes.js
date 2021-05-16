@@ -41,6 +41,7 @@ QuestionRoutes.get('/questions/:id', (req, res) => {
     db.select(
       'posts.*',
       db.raw('users.email'),
+      db.raw('users.name'),
       db.raw('votes2.vote as user_vote'),
       db.raw('sum(votes.vote) as vote_sum')
     )
@@ -52,7 +53,9 @@ QuestionRoutes.get('/questions/:id', (req, res) => {
       .groupBy('posts.id')
       .first()
       .then(question => {
-        db.select('*').from('question_tags')
+        db.select('*')
+          .from('question_tags')
+          .where({question_id:question.id})
           .join('tags','tags.id', '=', 'question_tags.tag_id')
           .then(tags => {
             res.json({question, tags});
@@ -63,15 +66,50 @@ QuestionRoutes.get('/questions/:id', (req, res) => {
 });
 
 QuestionRoutes.get('/questions', (req,res) => {
-  db
-    .select('*')
+  const tagName = req.query.tagName;
+  const token = req.cookies.token;
+
+  const query = db.select(
+      'posts.*',
+      db.raw('group_concat(tags.name) as tags'),
+      'users.email',
+      'users.name',
+      db.raw('users.id as user_id')
+    )
     .from('posts')
-    .where({parent_id: null})
-    .orderBy('id', 'desc')
-    .then(questions => {
-      res.json(questions).send();
+    .leftJoin('question_tags', 'question_tags.question_id', '=', 'posts.id')
+    .leftJoin('tags', 'tags.id', '=', 'question_tags.tag_id')
+    .join('users', 'users.id', '=', 'posts.author_id')
+    .where({
+      parent_id: null,
     })
-    .catch(() => res.status(422).send());
+    .orderBy('posts.id', 'desc')
+    .groupBy('posts.id');
+
+    if (tagName) {
+      query.having('tags', 'like', '%'+tagName+'%');
+    }
+
+    if (!tagName && token) {
+      getLoggedInUser(token)
+        .then(user => {
+          db.select('tag_id')
+            .from('user_tags')
+            .where({user_id:user.id})
+            .then(userTags => {
+              if (userTags.length > 0) {
+                query.whereIn('question_tags.tag_id', userTags.map(tag => tag.tag_id));
+              }
+              query.then(questions => {
+                res.json(questions).send();
+              }).catch(() => res.status(422).send());
+            });
+        });
+    } else {
+      query.then(questions => {
+        res.json(questions).send();
+      }).catch(e => console.log(e) && res.status(422).send());
+    }
 });
 
 export default QuestionRoutes;

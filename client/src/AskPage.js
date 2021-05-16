@@ -8,30 +8,10 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {Redirect} from "react-router-dom";
 import ReactTags from 'react-tag-autocomplete';
+import PostBodyTextarea from "./PostBodyTextarea";
 
 const Container = styled.div`
   padding: 30px 20px;
-`;
-
-const QuestionBodyTextarea = styled.textarea`
-  background:none;
-  border: 1px solid #777;
-  border-radius: 3px;
-  display: block;
-  width:100%;
-  box-sizing: border-box;
-  padding: 10px;
-  min-height: 200px;
-  margin-bottom: 20px;
-  color:#fff;
-  font-family: inherit;
-`;
-
-const PreviewArea = styled.div`
-  padding: 10px 20px;
-  background-color: #444;
-  border-radius: 5px;
-  margin-bottom: 20px;
 `;
 
 export default function AskPage() {
@@ -95,12 +75,10 @@ export default function AskPage() {
                value={questionTitle}
                onChange={e => setQuestionTitle(e.target.value)}
                placeholder="Title of your question" />
-        <QuestionBodyTextarea
-          onChange={e => setQuestionBody(e.target.value)}
-          placeholder="More info about your question. You can use markdown here" value={questionBody}/>
-        <PreviewArea>
-          <ReactMarkdown plugins={[gfm]} children={questionBody} />
-        </PreviewArea>
+        <PostBodyTextarea
+          placeholder={"More info about your question. You can use markdown here"}
+          value={questionBody}
+          handlePostBodyChange={value => setQuestionBody(value)} />
         <ReactTags
           ref={reactTags}
           tags={tags}

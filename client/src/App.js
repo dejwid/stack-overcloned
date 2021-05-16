@@ -15,6 +15,8 @@ import axios from "axios";
 import RegisterPage from "./RegisterPage";
 import ProfilePage from "./ProfilePage";
 import QuestionPage from "./QuestionPage";
+import TagPage from "./TagPage";
+import UserPage from "./UserPage";
 
 function App() {
   const [user,setUser] = useState(null);
@@ -23,7 +25,11 @@ function App() {
     return new Promise(((resolve, reject) => {
       axios.get('http://localhost:3030/profile', {withCredentials:true})
         .then(response => {
-          setUser({email:response.data});
+          setUser({
+            email:response.data.email,
+            name: response.data.name,
+            id: response.data.id,
+          });
           resolve(response.data);
         })
         .catch(() => {
@@ -32,6 +38,15 @@ function App() {
         });
     }));
 
+  }
+
+  function editUser(userProps) {
+    let newUserInfo = user;
+    for (let key in userProps) {
+      newUserInfo[key] = userProps[key];
+      console.log(key, userProps[key], newUserInfo);
+    }
+    setUser(newUserInfo);
   }
 
   useEffect(() => {
@@ -43,7 +58,7 @@ function App() {
       <Reset />
       <GlobalStyles />
       <Router>
-        <UserContext.Provider value={{user, checkAuth}}>
+        <UserContext.Provider value={{user, checkAuth, editUser}}>
           <Header />
           <Switch>
             <Route path="/ask" component={AskPage} />
@@ -51,6 +66,8 @@ function App() {
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
             <Route path="/questions/:id" component={QuestionPage} />
+            <Route path="/tag/:name" component={TagPage} />
+            <Route path="/users/:id" component={UserPage} />
             <Route path="/" component={QuestionsPage} />
           </Switch>
         </UserContext.Provider>

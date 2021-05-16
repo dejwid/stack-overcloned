@@ -6,7 +6,7 @@ import UserRoutes from "./UserRoutes.js";
 import QuestionRoutes from "./QuestionRoutes.js";
 import TagRoutes from "./TagRoutes.js";
 import VoteRoutes from "./VoteRoutes.js";
-import CommentRoutes from "./CommentRoutes.js";
+import PostRoutes from "./PostRoutes.js";
 
 const app = express();
 const port = 3030;
@@ -27,7 +27,7 @@ app.use(UserRoutes);
 app.use(QuestionRoutes);
 app.use(TagRoutes);
 app.use(VoteRoutes);
-app.use(CommentRoutes);
+app.use(PostRoutes);
 
 app.listen(port, () => {
   console.log('listening on port:'+port);

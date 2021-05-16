@@ -1,12 +1,16 @@
 import db from "./db.js";
 
-export function getPostComments(postId, userId = null) {
+export function getPostChildren(postIds, type, userId = null) {
   if (!userId) {
     userId = -1;
+  }
+  if (type.substr(type.length-1, 1) === 's' ) {
+    type = type.substr(0, type.length-1);
   }
   return db.select(
     'posts.*',
     'users.email',
+    db.raw('users.name as user_name'),
     db.raw('sum(votes.vote) as votes_sum'),
     db.raw('user_vote.vote as user_vote')
   )
@@ -15,7 +19,8 @@ export function getPostComments(postId, userId = null) {
     .from('posts')
     .join('users', 'users.id', '=', 'posts.author_id')
     .groupBy('posts.id')
+    .whereIn('parent_id', postIds)
     .where({
-      parent_id: postId,
+      type,
     });
 }

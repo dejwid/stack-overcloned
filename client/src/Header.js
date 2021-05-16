@@ -9,7 +9,7 @@ const StyledHeader = styled.header`
   background-color: #393939;
   box-shadow: 0 3px 3px rgba(0,0,0,.2);
   display:grid;
-  grid-template-columns: 220px 1fr 200px;
+  grid-template-columns: 1fr 200px;
   grid-column-gap: 20px;
 `;
 
@@ -52,9 +52,10 @@ const SearchInput = styled.input`
 
 const ProfileLink = styled(Link)`
   color:#fff;
-  padding: 0 10px;
+  padding: 0 20px;
   text-decoration: none;
   line-height: 50px;
+  text-align: right;
 `;
 
 function Header() {
@@ -65,11 +66,11 @@ function Header() {
         <FontAwesomeIcon icon={faStackOverflow} size="2x" />
         <span>stack<b>overcloned</b></span>
       </LogoLink>
-      <form action="" className="search">
-        <SearchInput type="text" placeholder="Search..."/>
-      </form>
+      {/*<form action="" className="search">*/}
+      {/*  <SearchInput type="text" placeholder="Search..."/>*/}
+      {/*</form>*/}
       {user && (
-        <ProfileLink to={'/profile'} className="profile">{user.email}</ProfileLink>
+        <ProfileLink to={'/users/'+user.id} className="profile">{user.name || user.email}</ProfileLink>
       )}
       {!user && (
         <div>

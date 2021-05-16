@@ -4,6 +4,7 @@ import QuestionRow from "./QuestionRow";
 import Header1 from "./Header1";
 import BlueButtonLink from "./BlueButtonLink";
 import axios from "axios";
+import {Helmet} from "react-helmet";
 
 const HeaderRow = styled.div`
   display: grid;
@@ -20,12 +21,20 @@ function QuestionsPage() {
   useEffect(() => fetchQuestions(), []);
   return (
     <main>
+      <Helmet>
+        <title>StackOvercloned - home</title>
+      </Helmet>
       <HeaderRow>
         <Header1 style={{margin:0}}>Questions</Header1>
         <BlueButtonLink to={'/ask'}>Ask&nbsp;Question</BlueButtonLink>
       </HeaderRow>
       {questions && questions.length > 0 && questions.map(question => (
-        <QuestionRow title={question.title} id={question.id} />
+        <QuestionRow
+          title={question.title}
+          id={question.id}
+          createdAt={question.created_at}
+          author={{id: question.user_id, name:question.name, email:question.email}}
+          tags={question.tags} />
       ))}
     </main>
   );

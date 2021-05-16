@@ -19,7 +19,7 @@ const StyledTag = styled(Link)`
 `;
 
 function Tag({name}) {
-  return (<StyledTag>{name}</StyledTag>);
+  return (<StyledTag to={'/tag/'+name}>{name}</StyledTag>);
 }
 
 Tag.propTypes = {
