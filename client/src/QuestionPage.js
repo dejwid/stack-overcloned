@@ -1,4 +1,4 @@
-import {useEffect,useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import axios from "axios";
 import styled from "styled-components";
 import Header1 from "./Header1";
@@ -43,7 +43,7 @@ function QuestionPage({match}) {
   const [answersComments,setAnswersComments] = useState([]);
   const [answers,setAnswers] = useState([]);
 
-  function getQuestion() {
+  const getQuestion = useCallback(() => {
     axios.get('http://localhost:3030/questions/'+match.params.id, {withCredentials:true})
       .then(response => {
         setQuestion(response.data.question);
@@ -52,13 +52,13 @@ function QuestionPage({match}) {
         setUserVote(response.data.question.user_vote);
         setTags(response.data.tags);
       });
-  }
-  function getQuestionComments() {
+  }, []);
+  const getQuestionComments = useCallback(() => {
     axios.get('http://localhost:3030/posts/comments/'+match.params.id, {withCredentials:true})
       .then(response => {
         setQuestionComments(response.data);
       });
-  }
+  }, []);
   function getAnswersComments(answers) {
     const ids = answers.map(answer => answer.id).join(',');
     axios.get('http://localhost:3030/posts/comments/'+(ids), {withCredentials:true})
@@ -66,13 +66,13 @@ function QuestionPage({match}) {
         setAnswersComments(response.data);
       });
   }
-  function getAnswers() {
+  const getAnswers = useCallback(() => {
     axios.get('http://localhost:3030/posts/answers/'+match.params.id, {withCredentials:true})
       .then(response => {
         setAnswers(response.data);
         getAnswersComments(response.data);
       });
-  }
+  }, []);
   function postAnswer(ev) {
     ev.preventDefault();
     const data = {postId: question.id, content: answerBody, type:'answer'};
