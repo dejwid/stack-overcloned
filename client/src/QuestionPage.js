@@ -52,13 +52,13 @@ function QuestionPage({match}) {
         setUserVote(response.data.question.user_vote);
         setTags(response.data.tags);
       });
-  }, []);
+  }, [match.params.id]);
   const getQuestionComments = useCallback(() => {
     axios.get('http://localhost:3030/posts/comments/'+match.params.id, {withCredentials:true})
       .then(response => {
         setQuestionComments(response.data);
       });
-  }, []);
+  }, [match.params.id]);
   function getAnswersComments(answers) {
     const ids = answers.map(answer => answer.id).join(',');
     axios.get('http://localhost:3030/posts/comments/'+(ids), {withCredentials:true})
@@ -72,7 +72,7 @@ function QuestionPage({match}) {
         setAnswers(response.data);
         getAnswersComments(response.data);
       });
-  }, []);
+  }, [match.params.id]);
   function postAnswer(ev) {
     ev.preventDefault();
     const data = {postId: question.id, content: answerBody, type:'answer'};
