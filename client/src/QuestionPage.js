@@ -83,13 +83,10 @@ function QuestionPage({match}) {
       });
   }
   useEffect(() => {
-    function loadQuestionPage() {
-      getQuestion();
-      getAnswers();
-      getQuestionComments();
-    }
-    loadQuestionPage();
-  }, []);
+    getQuestion();
+    getAnswers();
+    getQuestionComments();
+  }, [getQuestion, getAnswers, getQuestionComments]);
   return (
     <>
       <Container>

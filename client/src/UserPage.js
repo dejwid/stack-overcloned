@@ -60,7 +60,7 @@ function UserPage({match}) {
         });
     }
     getUserInfo();
-  }, []);
+  }, [match.params.id]);
 
   if (redirectToTheHomePage) {
     return (<Redirect to={'/'} />);
