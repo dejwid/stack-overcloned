@@ -9,7 +9,7 @@ import VoteRoutes from "./VoteRoutes.js";
 import PostRoutes from "./PostRoutes.js";
 
 const app = express();
-const port = 3030;
+const port = process.env.PORT || 3030;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
