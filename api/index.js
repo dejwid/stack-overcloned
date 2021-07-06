@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import serverless from "serverless-http";
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import UserRoutes from "./UserRoutes.js";
@@ -29,6 +30,8 @@ app.use(TagRoutes);
 app.use(VoteRoutes);
 app.use(PostRoutes);
 
-app.listen(port, () => {
-  console.log('listening on port:'+port);
-});
+//app.listen(port, () => {
+//  console.log('listening on port:'+port);
+//});
+
+module.exports.handler = serverless(app);

@@ -8,6 +8,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.4",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "serverless-http": "^2.7.0"
   }
 }
