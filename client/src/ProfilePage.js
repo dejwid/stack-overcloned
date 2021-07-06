@@ -1,4 +1,4 @@
-import {useState,useContext,Component} from 'react';
+import {Component} from 'react';
 import Header1 from "./Header1";
 import styled from "styled-components";
 import BlueButton from "./BlueButton";

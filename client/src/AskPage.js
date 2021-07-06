@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import Header1 from "./Header1";
 import BlueButton from "./BlueButton";
 import Input from './Input';
-import ReactMarkdown from 'react-markdown';
-import gfm from 'remark-gfm';
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {Redirect} from "react-router-dom";

@@ -40,18 +40,6 @@ function UserPage({match}) {
   const {user,checkAuth} = useContext(UserContext);
   const [redirectToTheHomePage, setRedirectToTheHomePage] = useState(false);
 
-  function getUserInfo() {
-    axios.get('http://localhost:3030/users/'+match.params.id)
-      .then(response => {
-        setUserInfo(response.data.user);
-        setVotesInfo(response.data.votesInfo);
-        let total = 0;
-        response.data.votesInfo.forEach(voteRow => {
-          total+= voteRow.votes_sum;
-        });
-        setVotesTotal(total);
-      });
-  }
   function logout() {
     axios.post('http://localhost:3030/logout', {}, {withCredentials: true})
       .then(() => {
@@ -59,6 +47,18 @@ function UserPage({match}) {
       });
   }
   useEffect(() => {
+    function getUserInfo() {
+      axios.get('http://localhost:3030/users/'+match.params.id)
+        .then(response => {
+          setUserInfo(response.data.user);
+          setVotesInfo(response.data.votesInfo);
+          let total = 0;
+          response.data.votesInfo.forEach(voteRow => {
+            total+= voteRow.votes_sum;
+          });
+          setVotesTotal(total);
+        });
+    }
     getUserInfo();
   }, []);
 

@@ -83,9 +83,12 @@ function QuestionPage({match}) {
       });
   }
   useEffect(() => {
-    getQuestion();
-    getAnswers();
-    getQuestionComments();
+    function loadQuestionPage() {
+      getQuestion();
+      getAnswers();
+      getQuestionComments();
+    }
+    loadQuestionPage();
   }, []);
   return (
     <>

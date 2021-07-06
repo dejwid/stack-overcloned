@@ -39,17 +39,6 @@ const LogoLink = styled(Link)`
   }
 `;
 
-const SearchInput = styled.input`
-  display: inline-block;
-  box-sizing: border-box;
-  width:100%;
-  border-radius: 3px;
-  border:1px solid #777;
-  background:rgba(0,0,0,.1);
-  padding: 8px 10px;
-  margin-top: 9px;
-`;
-
 const ProfileLink = styled(Link)`
   color:#fff;
   padding: 0 20px;
